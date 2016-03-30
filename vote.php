@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
   <?php
-    include 'sessionparameters.php';
 
     $projectParam = 'project';
     $requiredParams = array($projectParam);
@@ -14,12 +13,6 @@
     }
 
     $currentProject = $_GET[$projectParam];
-
-    session_start();
-
-    if(!isset($userParam, $_GET)){
-      die('You need to log in to vote');
-    }
   ?>
   <head>
     <?php include 'defaultheader.php'; ?>
@@ -29,6 +22,11 @@
     </title>
   </head>
   <body>
+    <?php
+      if(!isset($userParam, $_GET)){
+        die('You need to log in to vote');
+      }
+    ?>
     <!-- TODO: interface for voting -->
   </body>
 </html>

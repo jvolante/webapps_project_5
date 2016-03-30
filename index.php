@@ -6,14 +6,12 @@
     <title>People's Choice Awards</title>
   </head>
   <body>
-    <div id="signinbutton">
-      Sign in button goes here
-    </div>
-    <section>
+    <?php include 'topbar.php' ?>
+    <section id="title">
       Title Area
       <!-- TODO: Title image and whatever else -->
     </section>
-    <section>
+    <section id="projects">
       Projects Area
       <?php
         // TODO: Generate projects table from the database
