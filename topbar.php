@@ -1,7 +1,12 @@
 <style scoped>
 #topbar{
   position: fixed;
-
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 8%;
+  background-color: black;
+  color: white;
 }
 </style>
 <div id="topbar">
