@@ -12,11 +12,6 @@
     <title>People's Choice Awards</title>
 
     <script type="text/javascript">
-      // Javascript necessary for the top bar to work.
-      function showSigninFlyout() {
-        // TODO: Do stuff to show the siginin flyout.
-      }
-
       $(function (){
 
         $("#signin").click(function (){ return false; });
@@ -68,14 +63,14 @@
       <p id="message"></p>
       Name: <select name="user" id="user" style="color:black"></select><br>
       Password: <input type="password" style="color:black" name = "password" id="password"/><br>
-      <input type="submit" style="color:black"/>
+      <input type="submit" style="color:black" value="Log In"/>
     </form>
 
     <!-- /// JUMBOTRON \\\ -->
     <div class="jumbotron cd-intro">
       <div class="container cd-intro-content mask">
         <div class="hr animated fadeIn">
-          <img src="1st trophy.png" alt="Maple Leaf logo">
+          <img src="1st trophy.png" alt="Trophy logo">
           <hr>
         </div>
 
@@ -87,7 +82,7 @@
             <a href="404.html" class="cd-btn" id="signin" target="_blank" role="button"><?php
               // Generate sign in button.
               if(isset($_SESSION[$userParam])){
-                $name = $_SESSION[$userParam];
+                $name = $_SESSION[$nameParam];
                 echo 'Welcome $name! | (Not you?)';
               } else {
                 echo 'Sign in';
@@ -98,6 +93,7 @@
       </div>
     </div>
     <!-- /// END JUMBOTRON \\\ -->
+    <section style="background-color:#202E4A; height:40px; width:100%;"/></section>
     <section id="projects">
       Projects Area
       <?php

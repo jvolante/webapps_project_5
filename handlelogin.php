@@ -9,7 +9,7 @@
       die("Database Connection Failed");
     }
 
-    $result = $conn->query("SELECT password_hash FROM jk_users WHERE linux_user = $username;");
+    $result = $conn->query("SELECT password_hash, name FROM jk_users WHERE linux_user = $username;");
 
     if($result->num_rows == 0){
       die("Error, no entry was found for $username");
@@ -17,6 +17,7 @@
       $row = $result->fetch_assoc();
       if($row["password_hash"] == $password){
         $_SESSION[$userParam] = $username;
+        $_SESSION[$nameParam] = $row["name"];
       } else {
         die("Incorrect Password.");
       }
