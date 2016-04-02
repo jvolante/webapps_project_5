@@ -40,6 +40,7 @@
         });
       });
 
+      passwordgood = false;
       function verifyPassword() {
         shaobject = new jsSHA("SHA-512", "TEXT");
         shaobject.update($("#password").val());
@@ -49,23 +50,25 @@
           "ajax/verifypassword.php",
           {"username":$("#user").val(), "password":passwordhash},
           function(data){
-            if(data = "success"){
+            if(data == "success"){
+              passwordgood = true;
               $("#loginform").submit();
             } else {
               $("#message").html("Incorrect Password");
             }
           }
         );
+        return passwordgood;
       }
     </script>
   </head>
   <body>
-    <form action="index.php" method="post" id="loginform">
+    <form action="index.php" method="post" id="loginform" onsubmit="return verifyPassword()">
       <!-- Sign in form for flyout, This won't show in the main page -->
       <p id="message"></p>
       Name: <select name="user" id="user" style="color:black"></select><br>
       Password: <input type="password" style="color:black" name = "password" id="password"/><br>
-      <button id="submitlogin" onclick="verifyPassword()" style="color:black">Log in</button>
+      <input type="submit" style="color:black"/>
     </form>
 
     <!-- /// JUMBOTRON \\\ -->
