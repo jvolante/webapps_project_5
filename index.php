@@ -19,16 +19,25 @@
       $(function (){
         drop = new Drop({
           target: document.querySelector('#signin'),
-          content: '<form action="index.php" method="post" id="loginform">Name: <input type="text" /></br>Password: <input type="password" style="color:black"/></form><button id="submitlogin">Log in</button>',
+          content: '<form action="index.php" method="post" id="loginform">Name: <select name="user" id="user" style="color:black"></select></br>Password: <input type="password" style="color:black" name = "password" id="password"/></form><button id="submitlogin" onclick="verifyPassword()">Log in</button>',
           position: 'bottom center',
           openOn: 'click',
           classes: 'drop-target drop-theme-arrows-bounce-dark'
         });
 
-        $("#signin").click(function (){
-          return false;
+        $("#signin").click(function (){ return false; });
+        $.post("ajax/getuseroptions.php",
+        function(data){
+          $.each(data, function(key, value){
+            $("user".append('<option value="' + key + '">' + value + '</option>'))
+          })
         });
+
       });
+
+      function verifyPassword() {
+
+      }
     </script>
   </head>
   <body>
