@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="css/drop-theme-arrows-bounce-dark.min.css" />
     <script src="js/tether.min.js"></script>
     <script src="js/drop.min.js"></script>
+    <script src="js/sha512.js"></script>
     <?php include 'defaultheader.php'; ?>
     <?php include 'params.php' ?>
     <?php include 'handlelogin.php' ?>
@@ -37,21 +38,36 @@
             classes: 'drop-target drop-theme-arrows-bounce-dark'
           });
         });
-
       });
 
       function verifyPassword() {
+        shaobject = new jsSHA("SHA-512", "TEXT");
+        shaobject.update($("#password").val());
+        passwordhash = shaobject.getHash("HEX");
 
+        $.post(
+          "ajax/verifypassword.php",
+          {"username":$("#user").val(), "password":passwordhash},
+          function(data){
+            if(data = "success"){
+              $("#loginform").submit();
+            } else {
+              $("#message").html("Incorrect Password");
+            }
+          }
+        );
       }
     </script>
   </head>
   <body>
-    <!-- Sign in form for flyout -->
     <form action="index.php" method="post" id="loginform">
+      <!-- Sign in form for flyout, This won't show in the main page -->
+      <p id="message"></p>
       Name: <select name="user" id="user" style="color:black"></select><br>
       Password: <input type="password" style="color:black" name = "password" id="password"/><br>
       <button id="submitlogin" onclick="verifyPassword()" style="color:black">Log in</button>
     </form>
+
     <!-- /// JUMBOTRON \\\ -->
     <div class="jumbotron cd-intro">
       <div class="container cd-intro-content mask">
