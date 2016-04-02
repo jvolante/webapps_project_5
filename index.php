@@ -2,16 +2,36 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="css/drop-theme-arrows-bounce-dark.min.css" />
+    <script src="js/tether.min.js"></script>
+    <script src="js/drop.min.js"></script>
     <?php include 'defaultheader.php'; ?>
+    <?php include 'params.php' ?>
+    <?php include 'handlelogin.php' ?>
     <title>People's Choice Awards</title>
+
+    <script type="text/javascript">
+      // Javascript necessary for the top bar to work.
+      function showSigninFlyout() {
+        // TODO: Do stuff to show the siginin flyout.
+      }
+
+      $(function (){
+        drop = new Drop({
+          target: document.querySelector('#signin'),
+          content: '<form action="index.php" method="post" id="loginform">Name: <input type="text" /></br>Password: <input type="password" style="color:black"/></form><button id="submitlogin">Log in</button>',
+          position: 'bottom center',
+          openOn: 'click',
+          classes: 'drop-target drop-theme-arrows-bounce-dark'
+        });
+
+        $("#signin").click(function (){
+          return false;
+        });
+      });
+    </script>
   </head>
   <body>
-    <head>
-      <link rel="stylesheet" href="poop.css" media="screen" title="no title" charset="utf-8">
-      <script type="text/javascript" src="poop.js">
-
-      </script>
-    </head>
     <!-- /// JUMBOTRON \\\ -->
     <div class="jumbotron cd-intro">
       <div class="container cd-intro-content mask">

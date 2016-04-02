@@ -631,7 +631,7 @@ textarea {
 
    .jumbotron {
    	background: #003e7e;
-   	background: url("poop.jpg");
+   	background: url("../background.jpg");
    	background-size: cover;
    	background-position: 50% 50%;
    	background-repeat: no-repeat;
