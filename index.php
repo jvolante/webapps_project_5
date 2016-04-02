@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/drop-theme-arrows-bounce-dark.min.css" />
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="js/tether.min.js"></script>
     <script src="js/drop.min.js"></script>
     <script src="js/sha512.js"></script>
@@ -95,10 +98,57 @@
     <!-- /// END JUMBOTRON \\\ -->
     <section style="background-color:#202E4A; height:40px; width:100%;"/></section>
     <section id="projects">
-      Projects Area
-      <?php
-        // TODO: Generate projects table from the database
-      ?>
+		<div id="tabs" class="container">
+		<ul  class="nav nav-tabs">
+			<li class="active"><a  href="#1b" data-toggle="tab">Overview</a></li>
+		<?php
+			$servername = "localhost";
+			$username = "extern2";
+			$password = "mypassword";
+			$dbname = "pca";
+
+			// Create connection
+			$conn = new mysqli($servername, $username, $password);
+
+			// Check connection
+			if ($conn->connect_error) {
+				die("Connection failed: " . $conn->connect_error);
+			}
+
+			$result = $conn->query("SELECT name FROM pca.jk_projects;");
+
+			if (! $result){
+				// probably a syntax error in your SQL,
+				// but could be some other error
+				throw new Db_Query_Exception("DB Error: " . mysql_error());
+			}
+
+			$numProjects = mysqli_num_rows($result);
+			$curProj = 1;
+			if ($numProjects == 0){
+				echo "No data returned";
+			}else{
+				// our query returned at least one result. loop over results and do stuff.
+				while($row = mysqli_fetch_assoc($result)){
+					echo "<li><a href=\"#p" . $curProj . "\" data-toggle=\"tab\">" . $row['name'] . "</a></li>";
+					$curProj++;
+				}
+			}
+		?>
+		</ul>
+				<div class="tab-content clearfix">
+			<div class="tab-pane active" id="1b">
+				<h3>This is the default tab</h3>
+			</div>
+			<div class="tab-pane" id="p1">
+				<h3>This is project 1</h3>
+			</div>
+			<div class="tab-pane" id="p2">
+				<h3>This is project 2</h3>
+			</div>
+			</div>
+		</div>
     </section>
+	$.post("ajax/getuseroptions.php");
   </body>
 </html>
