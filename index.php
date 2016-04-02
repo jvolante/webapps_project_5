@@ -17,20 +17,25 @@
       }
 
       $(function (){
-        drop = new Drop({
-          target: document.querySelector('#signin'),
-          content: '<form action="index.php" method="post" id="loginform">Name: <select name="user" id="user" style="color:black"></select></br>Password: <input type="password" style="color:black" name = "password" id="password"/></form><button id="submitlogin" onclick="verifyPassword()">Log in</button>',
-          position: 'bottom center',
-          openOn: 'click',
-          classes: 'drop-target drop-theme-arrows-bounce-dark'
-        });
 
         $("#signin").click(function (){ return false; });
+
+        // Populate the list of usernames.
         $.post("ajax/getuseroptions.php",
         function(data){
+          data = $.parseJSON(data);
           $.each(data, function(key, value){
-            $("user".append('<option value="' + key + '">' + value + '</option>'))
-          })
+            $("#user").append('<option value="' + key + '">' + value + '</option>');
+          });
+
+          //Create the sign in flyout
+          drop = new Drop({
+            target: document.querySelector('#signin'),
+            content: document.querySelector('#loginform'),
+            position: 'bottom center',
+            openOn: 'click',
+            classes: 'drop-target drop-theme-arrows-bounce-dark'
+          });
         });
 
       });
@@ -41,6 +46,12 @@
     </script>
   </head>
   <body>
+    <!-- Sign in form for flyout -->
+    <form action="index.php" method="post" id="loginform">
+      Name: <select name="user" id="user" style="color:black"></select><br>
+      Password: <input type="password" style="color:black" name = "password" id="password"/><br>
+      <button id="submitlogin" onclick="verifyPassword()" style="color:black">Log in</button>
+    </form>
     <!-- /// JUMBOTRON \\\ -->
     <div class="jumbotron cd-intro">
       <div class="container cd-intro-content mask">
