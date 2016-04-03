@@ -48,7 +48,6 @@
         function(data){
           data = $.parseJSON(data);
 		  isFirst = true
-		  for(i = 0; i < 10; i++){
           $.each(data, function(key, value){
 			if(isFirst){
 				$("#crossbarLinkArea").append('<a href="http://judah.cedarville.edu/~' + key + '/cs4220.html" class="crossbar">' + value + '</a>');
@@ -59,7 +58,6 @@
 				$("#crossbarLinkArea").append('<a href="http://judah.cedarville.edu/~' + key + '/cs4220.html" class="crossbar">' + value + '</a>');
 			}			
           });
-		  }
         });
 	  }
 	  
