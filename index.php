@@ -16,11 +16,6 @@
     <title>People's Choice Awards</title>
 
     <script type="text/javascript">
-      // Javascript necessary for the top bar to work.
-      function showSigninFlyout() {
-        // TODO: Do stuff to show the siginin flyout.
-      }
-
       $(function (){
 
         $("#signin").click(function (){ return false; });
@@ -99,14 +94,14 @@
       <p id="message"></p>
       Name: <select name="user" id="user" style="color:black"></select><br>
       Password: <input type="password" style="color:black" name = "password" id="password"/><br>
-      <input type="submit" style="color:black"/>
+      <input type="submit" style="color:black" value="Log In"/>
     </form>
 
     <!-- /// JUMBOTRON \\\ -->
     <div class="jumbotron cd-intro">
       <div class="container cd-intro-content mask">
         <div class="hr animated fadeIn">
-          <img src="1st trophy.png" alt="Maple Leaf logo">
+          <img src="1st trophy.png" alt="Trophy logo">
           <hr>
         </div>
 
@@ -118,7 +113,7 @@
             <a href="404.html" class="cd-btn" id="signin" target="_blank" role="button"><?php
               // Generate sign in button.
               if(isset($_SESSION[$userParam])){
-                $name = $_SESSION[$userParam];
+                $name = $_SESSION[$nameParam];
                 echo 'Welcome $name! | (Not you?)';
               } else {
                 echo 'Sign in';
@@ -129,14 +124,12 @@
       </div>
     </div>
     <!-- /// END JUMBOTRON \\\ -->
-	
 	<section class="crossbar">
 		<section class="crossbarLinks" id="crossbarLinkArea">
 		</section>
 	</section>
-	
     <section id="projects">
-		<div id="tabs" class="container">	
+		<div id="tabs" class="container">
 		<ul  class="nav nav-tabs">
 			<li class="active"><a  href="#1b" data-toggle="tab">Overview</a></li>
 		<?php
@@ -151,19 +144,19 @@
 			// Check connection
 			if ($conn->connect_error) {
 				die("Connection failed: " . $conn->connect_error);
-			} 
-			
-			$result = $conn->query("SELECT name FROM pca.jk_projects;");
-		
-			if (! $result){ 
-				// probably a syntax error in your SQL, 
-				// but could be some other error
-				throw new Db_Query_Exception("DB Error: " . mysql_error()); 
 			}
-		
+
+			$result = $conn->query("SELECT name FROM pca.jk_projects;");
+
+			if (! $result){
+				// probably a syntax error in your SQL,
+				// but could be some other error
+				throw new Db_Query_Exception("DB Error: " . mysql_error());
+			}
+
 			$numProjects = mysqli_num_rows($result);
 			$curProj = 1;
-			if ($numProjects == 0){   
+			if ($numProjects == 0){
 				echo "No data returned";
 			}else{
 				// our query returned at least one result. loop over results and do stuff.

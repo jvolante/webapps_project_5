@@ -3,5 +3,5 @@
 
   // TODO: Actually implement this
   $users = array("Boblinux"=>"Bob Smith", "Jonlinux"=>"John Doe");
-  echo json_encode($users)
+  echo json_encode($users);
 ?>
