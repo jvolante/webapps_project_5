@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/drop-theme-arrows-bounce-dark.min.css" />
+    <link rel="stylesheet" href="css/drop-theme-arrows-bounce-dark.min.css"/>
+	<link rel="stylesheet" href="css/index-style.css"/>
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -42,6 +43,31 @@
           });
         });
       });
+	  
+	  window.onload = function(){
+		populateNames();
+	  }
+	  
+	  function populateNames() {
+		$.post("ajax/getusers.php",
+        function(data){
+          data = $.parseJSON(data);
+		  isFirst = true
+		  for(i = 0; i < 10; i++){
+          $.each(data, function(key, value){
+			if(isFirst){
+				$("#crossbarLinkArea").append('<a href="http://judah.cedarville.edu/~' + key + '/cs4220.html" class="crossbar">' + value + '</a>');
+				isFirst = false;
+			}
+			else {
+				$("#crossbarLinkArea").append('\n&bull;\n');
+				$("#crossbarLinkArea").append('<a href="http://judah.cedarville.edu/~' + key + '/cs4220.html" class="crossbar">' + value + '</a>');
+			}			
+          });
+		  }
+        });
+	  }
+	  
 
       passwordgood = false;
       function verifyPassword() {
@@ -63,6 +89,8 @@
         );
         return passwordgood;
       }
+	  
+	  
     </script>
   </head>
   <body>
@@ -101,7 +129,12 @@
       </div>
     </div>
     <!-- /// END JUMBOTRON \\\ -->
-	<section style="background-color:#202E4A; height:40px; width:100%;"/></section>
+	
+	<section class="crossbar">
+		<section class="crossbarLinks" id="crossbarLinkArea">
+		</section>
+	</section>
+	
     <section id="projects">
 		<div id="tabs" class="container">	
 		<ul  class="nav nav-tabs">
@@ -141,19 +174,18 @@
 			}
 		?>
 		</ul>
-				<div class="tab-content clearfix">
-			<div class="tab-pane active" id="1b">
-				<h3>This is the default tab</h3>
-			</div>
-			<div class="tab-pane" id="p1">
-				<h3>This is project 1</h3>
-			</div>
-			<div class="tab-pane" id="p2">
-				<h3>This is project 2</h3>
-			</div>
+			<div class="tab-content clearfix">
+				<div class="tab-pane active" id="1b">
+					<h3>This is the default tab</h3>
+				</div>
+				<div class="tab-pane" id="p1">
+					<h3>This is project 1</h3>
+				</div>
+				<div class="tab-pane" id="p2">
+					<h3>This is project 2</h3>
+				</div>
 			</div>
 		</div>
     </section>
-	$.post("ajax/getuseroptions.php");
   </body>
 </html>

@@ -1,0 +1,17 @@
+section.crossbar {
+	background-color:#202E4A;
+	width:100%;"
+}
+
+section.crossbarLinks {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-right: 30px;
+	padding-left: 30px;
+	text-align: center;
+}
+
+a.crossbar {
+	white-space: nowrap;
+	color:white;
+}
