@@ -42,10 +42,6 @@
   <div class="tab-content">
     <div class="tab-pane fade" id="users">
       <table id="currentusers">
-        <tr>
-          <th colspan="2">Users</th>
-        </tr>
-        <tr>
           <th>Name</th>
           <th>Linux Username</th>
         </tr>
@@ -53,10 +49,21 @@
     </div>
     <div class="tab-pane fade" id="teams">
       <ul id="userslistteams"></ul>
-
+      <div class="teams">
+        <ul class="team">
+          <li id="addteam">
+            <svg enable-background="new 0 0 500 500" id="Layer_1" version="1.1" viewBox="0 0 500 500" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <circle cx="249.9" cy="250.4" r="204.7" stroke="#000000" stroke-miterlimit="10"/><circle cx="249.9" cy="247.4" fill="#FFFFFF" r="181.8" stroke="#000000" stroke-miterlimit="10"/>
+              <g>
+                <line fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="22" x1="250" x2="250" y1="123" y2="372"/>
+                <line fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="22" x1="374" x2="126" y1="247" y2="247"/>
+              </g>
+            </svg>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="tab-pane fade" id="voting">
-
     </div>
     <div class="tab-pane fade" id="setup">
       <h1>Setup</h1>
