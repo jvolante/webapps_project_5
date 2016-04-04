@@ -12,13 +12,17 @@ if(isset($_GET["projectname"])){
 
   $result = $conn->query("SELECT team_id, user FROM jk_team WHERE project = '$projectName' ORDER BY team_id;");
 
-  $teams = array();
-  while($row = mysqli_fetch_assoc($result)){
-    if(!isset($teams[$row["team_id"]])){
-      $teams[$row["team_id"]] = array();
+  if($result->num_rows == 0){
+    echo "none";
+  } else {
+    $teams = array();
+    while($row = mysqli_fetch_assoc($result)){
+      if(!isset($teams[$row["team_id"]])){
+        $teams[$row["team_id"]] = array();
+      }
+      array_push($teams[$row["team_id"]], $row["user"]);
     }
-    array_push($teams[$row["team_id"]], $row["user"]);
+    echo json_encode($teams);
   }
-  echo json_encode($teams);
 }
 ?>

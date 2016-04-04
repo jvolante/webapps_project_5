@@ -32,13 +32,12 @@
     }
     ?>
     <title>Site Setup</title>
-    <script type="text/javascript" src="js/jquery.wookmark.min.js"></script>
     <script type="text/javascript">
       function updateUsersLists() {
         $("currentusers").append("");
         $("userslistteams").append("");
         $.getJSON(
-          'ajax/getuseroptions.php',
+          'ajax/getusers.php',
           function(data){
             $.each(
               data,
@@ -50,29 +49,43 @@
       }
 
       function popluateTeamBoxes(projectname) {
+        $(".teams").html("");
         $.getJSON(
           'ajax/getteamsforproject.php',
           {'projectname':projectname},
           function (data) {
-            $.each(
-              data,
-              function(team_id, members){
-                teamlist = "";
-                $.each(
-                  members,
-                  function(index, name){
-                    teamlist += "<li>" + name + "</li>";
-                  }
-                );
-
-                $("#addteam").before('<li><ul id="teammembers' + team_id + '">' + teamlist + '</ul>');
-                $("#teammembers" + team_id)
-              }
-              $(".teams").wookmark({
-                align: 'center',
-                autoResize: true
+            if(data == "none"){
+              currentteam = 1;
+              $.getJSON(
+                'getusers.php',
+                function(data){
+                  $.each(data, function(linuxuser, name){
+                    $(".teams").append('<li><ul class="team" id="team' + currentteam + '"><li>' + linuxuser + '</li></ul></li>');
+                  });
+                }
+              );
+            } else {
+              $.each(
+                data,
+                function(team_id, members){
+                  teamlist = "";
+                  $.each(
+                    members,
+                    function(index, name){
+                      teamlist += "<li>" + name + "</li>";
+                    }
+                  );
+                  $(".teams").append('<li><ul class="team" id="team' + team_id + '">' + teamlist + '</ul></li>');
+                }
+              );
+            }
+            // Make the drag and drop crap
+            $(".team").each(function(index){
+              sortable = new Sortable(this, {
+                group: 'teams',
+                sort: 'true'
               });
-            );
+            });
           }
         );
       }
@@ -89,9 +102,9 @@
               data,
               function(key, value){
                 if(value){
-                  projectbutton = '<div class="votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Close</div>'
+                  projectbutton = '<div class="votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Close</div>';
                 } else {
-                  projectbutton = '<div class="openproject votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Open</div>'
+                  projectbutton = '<div class="openproject votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Open</div>';
                 }
                 $("#selectproject").append('<option value="' + key + '">' + key + "</option>");
                 if(startingproject == 0){
@@ -174,15 +187,40 @@
             );
           }
         });
+
+        $("#setteamsbutton").click(function(){
+          data = {};
+          $(".team").each(function(index){
+            team_id = parseInt($(this).id().match(/team(\d+)/)[1]);
+            members = [];
+            $(this).children('li').each(function(i){
+              members.push($(this).html());
+            });
+            data[team_id] = members;
+          });
+
+          $("#setteamsbutton").html('Working...');
+
+          $.post(
+            'ajax/newteamsforporject.php',
+            {'teams':JSON.stringify(data)},
+            function(data){
+              $("#setteamsbutton").html('Set Teams');
+              if(data == 'success'){
+                $("#addteamsmessage").html("");
+              } else {
+                $("#addteamsmessage").html("Failed to update teams");
+              }
+            }
+          )
+        });
       });
     </script>
     <style media="screen">
       th{
         text-align: center;
       }
-      .team, #addteam{
 
-      }
       .btn {
         -webkit-border-radius: 10;
         -moz-border-radius: 10;
@@ -228,20 +266,43 @@
       </div>
     </div>
     <div class="tab-pane fade" id="teams">
-      <select id="selectproject" name=""></select>
-      <ul id="userslistteams"></ul>
+      <div id="addteamsmessage">
+
+      </div>
+      <select id="selectproject" name="">
+        <?php
+        include 'sqlserverparams.php';
+        // Create connection
+  			$conn = new mysqli($serverAddress, $serverUser, $serverPassword);
+
+  			// Check connection
+  			if ($conn->connect_error) {
+  				die("Connection failed: " . $conn->connect_error);
+  			}
+
+  			$result = $conn->query("SELECT name FROM pca.jk_projects;");
+
+  			if (! $result){
+  				// probably a syntax error in your SQL,
+  				// but could be some other error
+  				throw new Db_Query_Exception("DB Error: " . mysql_error());
+  			}
+
+  			$numProjects = mysqli_num_rows($result);
+  			if ($numProjects == 0){
+  				echo "No data returned";
+  			}else{
+  				// our query returned at least one result. loop over results and do stuff.
+  				while($row = mysqli_fetch_assoc($result)){
+  					echo "<li><a href=\"#p" . $curProj . "\" data-toggle=\"tab\">" . $row['name'] . "</a></li>";
+  					$curProj++;
+  				}
+  			}
+        ?>
+      </select>
       <ul class="teams">
-        <li id="addteam">
-          <svg enable-background="new 0 0 500 500" id="Layer_1" version="1.1" viewBox="0 0 500 500" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <circle cx="249.9" cy="250.4" r="204.7" stroke="#202E4A" stroke-miterlimit="10"/>
-            <circle cx="249.9" cy="247.4" fill="#FFFFFF" r="181.8" stroke="#202E4A" stroke-miterlimit="10"/>
-            <g>
-              <line fill="none" stroke="#202E4A" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="22" x1="250" x2="250" y1="123" y2="372"/>
-              <line fill="none" stroke="#202E4A" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="22" x1="374" x2="126" y1="247" y2="247"/>
-            </g>
-          </svg>
-        </li>
       </ul>
+      <div class="btn" id="setteamsbutton">Set Teams</div>
     </div>
     <div class="tab-pane fade" id="voting">
       <div id="projectvotingmessage">
