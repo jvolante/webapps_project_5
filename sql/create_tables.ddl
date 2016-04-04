@@ -21,7 +21,7 @@ CREATE TABLE jk_team(
   team_id INT,
   project varchar(15),
   user varchar(8),
-  PRIMARY KEY (team_id, project),
+  PRIMARY KEY (team_id, project, user),
   FOREIGN KEY (user) REFERENCES jk_users(linux_user),
   FOREIGN KEY (project) REFERENCES jk_projects(name)
 );
@@ -34,6 +34,7 @@ CREATE TABLE jk_votes(
   third INT,
   PRIMARY KEY (user, project),
   FOREIGN KEY (user) REFERENCES jk_users(linux_user),
+  FOREIGN KEY (project) REFERENCES jk_projects(name),
   FOREIGN KEY (first) REFERENCES jk_team(team_id),
   FOREIGN KEY (second) REFERENCES jk_team(team_id),
   FOREIGN KEY (third) REFERENCES jk_team(team_id)

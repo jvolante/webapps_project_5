@@ -21,7 +21,7 @@
         $("#signin").click(function (){ return false; });
 
         // Populate the list of usernames.
-        $.post("ajax/getuseroptions.php",
+        $.post("ajax/getusers.php",
         function(data){
           data = $.parseJSON(data);
           $.each(data, function(key, value){
@@ -62,13 +62,12 @@
         });
 	  }
 	  
-
       passwordgood = false;
       function verifyPassword() {
         shaobject = new jsSHA("SHA-512", "TEXT");
         shaobject.update($("#password").val());
         passwordhash = shaobject.getHash("HEX");
-
+		
         $.post(
           "ajax/verifypassword.php",
           {"username":$("#user").val(), "password":passwordhash},
@@ -84,6 +83,13 @@
         return passwordgood;
       }
 	  
+	  $.post(
+		"ajax/getteamsforproject.php",
+		{"projectname":"Project 2"},
+		function(data){
+			window.alert(data);
+		}
+	  );
 	  
     </script>
   </head>
@@ -132,9 +138,7 @@
 		<ul  class="nav nav-tabs">
 			<li class="active"><a  href="#1b" data-toggle="tab">Overview</a></li>
 		<?php
-      include 'sqlserverparams.php'
-      
-			$dbname = "pca";
+			include 'sqlserverparams.php';
 
 			// Create connection
 			$conn = new mysqli($serverAddress, $serverUser, $serverPassword);
@@ -168,6 +172,7 @@
 			<div class="tab-content clearfix">
 				<div class="tab-pane active" id="1b">
 					<h3>This is the default tab</h3>
+					
 				</div>
 				<div class="tab-pane" id="p1">
 					<h3>This is project 1</h3>

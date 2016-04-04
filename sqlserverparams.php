@@ -1,5 +1,5 @@
 <?php
-$serverAddress = "james";
-$serverUser = "CS4220";
-$serverPassword = "";
+$serverAddress = "localhost";
+$serverUser = "extern2";
+$serverPassword = "mypassword";
 ?>
