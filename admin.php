@@ -6,6 +6,7 @@
     <?php include 'handlelogin.php' ?>
     <?php include 'params.php' ?>
     <?php
+    // Make sure user is admin
     if(!isset($_SESSION[$userParam]) || $_SESSION[$userParam] != 'admin'){
       die("You must be admin to view this page!");
     }
@@ -33,6 +34,8 @@
     <script type="text/javascript" src="js/jquery.wookmark.min.js"></script>
     <script type="text/javascript">
       function updateUsersLists() {
+        $("currentusers").append("");
+        $("userslistteams").append("");
         $.getJSON(
           'ajax/getuseroptions.php',
           function(data){
@@ -75,6 +78,7 @@
 
       startingproject = 0;
 
+
       $(function(){
         updateUsersLists();
         $.getJSON(
@@ -84,9 +88,9 @@
               data,
               function(key, value){
                 if(value){
-                  projectbutton = '<div class="closeproject votebutton">Close</div>'
+                  projectbutton = '<div class="votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Close</div>'
                 } else {
-                  projectbutton = '<div class="openproject votebutton">Open</div>'
+                  projectbutton = '<div class="openproject votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Open</div>'
                 }
                 $("#selectproject").append('<option value="' + key + '">' + key + "</option>");
                 if(startingproject == 0){
@@ -95,6 +99,38 @@
                 $("#projectvotinglist").append("<li>" + key + " " + projectbutton + "</li>");
               }
             );
+
+            $(".votebutton").click(function(event){
+              obj = $(this)
+              projectname = obj.parent().html().match(/([\w \d]+?) </)[1];
+              obj.html("Working...");
+
+              // The object will have the openproject class if the project is already open
+              opening = !obj.hasClass("openproject");
+
+              $.post(
+                'ajax/opencloseproject.php',
+                {'project':projectname, 'open':opening},
+                function(data){
+                  if(data == "success"){
+                    if(opening){
+                      obj.addClass("openproject");
+                      obj.html("Close");
+                    } else {
+                      obj.removeClass("openproject");
+                      obj.html("Open");
+                    }
+                  } else {
+                    if(opening){
+                      obj.html("Open");
+                    } else {
+                      obj.html("Close");
+                    }
+                    $("#projectvotingmessage").html("Failed to open project!");
+                  }
+                }
+              );
+            });
           }
         );
         $(".resetform").submit(function(){
@@ -112,7 +148,7 @@
         $("#addusersbutton").click(function(){
           if($("#addusersbutton").html() == "Add Users"){
             $("#addusersmessage").html("");
-            re = /(.+?):([\w\d]+)/;
+            re = /(.{1,8}):([\w\d]{1,20})/;
             s = $("newusers").val();
 
             userlist = {};
@@ -125,7 +161,10 @@
               'ajax/addusers.php',
               userlist,
               function(data){
-                if(data != "success"){
+                if(data == "success"){
+                  $("#newusers").val("");
+                  updateUsersLists();
+                } else {
                   $("#addusersmessage").html("Failed to add new users!");
                 }
                 $("#addusersbutton").html("Add Users");
@@ -203,6 +242,9 @@
       </ul>
     </div>
     <div class="tab-pane fade" id="voting">
+      <div id="projectvotingmessage">
+
+      </div>
       <ul id="projectvotinglist"></ul>
     </div>
     <div class="tab-pane fade" id="setup">
