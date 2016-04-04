@@ -60,7 +60,7 @@
                 'getusers.php',
                 function(data){
                   $.each(data, function(linuxuser, name){
-                    $(".teams").append('<li class="team team' + currentteam + '"><ul class="teammembers"><li>' + linuxuser + '</li></ul></li>');
+                    $(".teams").append('<li><ul class="team" id="team' + currentteam + '"><li>' + linuxuser + '</li></ul></li>');
                   });
                 }
               );
@@ -75,10 +75,17 @@
                       teamlist += "<li>" + name + "</li>";
                     }
                   );
-                  $(".teams").append('<li class="team team' + team_id + '"><ul class="teammembers">' + teamlist + '</ul></li>');
+                  $(".teams").append('<li><ul class="team" id="team' + team_id + '">' + teamlist + '</ul></li>');
                 }
               );
             }
+            // Make the drag and drop crap
+            $(".team").each(function(index){
+              sortable = new Sortable(this, {
+                group: 'teams',
+                sort: 'true'
+              });
+            });
           }
         );
       }
@@ -180,15 +187,40 @@
             );
           }
         });
+
+        $("#setteamsbutton").click(function(){
+          data = {};
+          $(".team").each(function(index){
+            team_id = parseInt($(this).id().match(/team(\d+)/)[1]);
+            members = [];
+            $(this).children('li').each(function(i){
+              members.push($(this).html());
+            });
+            data[team_id] = members;
+          });
+
+          $("#setteamsbutton").html('Working...');
+
+          $.post(
+            'ajax/newteamsforporject.php',
+            {'teams':JSON.stringify(data)},
+            function(data){
+              $("#setteamsbutton").html('Set Teams');
+              if(data == 'success'){
+                $("#addteamsmessage").html("");
+              } else {
+                $("#addteamsmessage").html("Failed to update teams");
+              }
+            }
+          )
+        });
       });
     </script>
     <style media="screen">
       th{
         text-align: center;
       }
-      .team, #addteam{
 
-      }
       .btn {
         -webkit-border-radius: 10;
         -moz-border-radius: 10;
@@ -234,6 +266,9 @@
       </div>
     </div>
     <div class="tab-pane fade" id="teams">
+      <div id="addteamsmessage">
+
+      </div>
       <select id="selectproject" name="">
         <?php
         include 'sqlserverparams.php';
@@ -265,9 +300,9 @@
   			}
         ?>
       </select>
-      <ul id="userslistteams"></ul>
       <ul class="teams">
       </ul>
+      <div class="btn" id="setteamsbutton">Set Teams</div>
     </div>
     <div class="tab-pane fade" id="voting">
       <div id="projectvotingmessage">
