@@ -67,6 +67,7 @@
       shaobject = new jsSHA("SHA-512", "TEXT");
       shaobject.update($("#password").val());
       passwordhash = shaobject.getHash("HEX");
+	  console.log(passwordhash);
 
       $.post(
         "ajax/verifypassword.php",

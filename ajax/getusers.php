@@ -1,8 +1,6 @@
 <?php
-	$servername = "localhost";
-	$username = "extern2";
-	$password = "mypassword";
-	$dbname = "pca";
+if(isset($_GET["projectname"])){
+	include '/../sqlserverparams.php';
 
 	// Create connection
 	$conn = new mysqli($servername, $username, $password);
@@ -25,4 +23,5 @@
 	}
 	
 	echo json_encode($rows);
+}
 ?>
