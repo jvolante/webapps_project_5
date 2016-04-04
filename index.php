@@ -67,6 +67,7 @@
       shaobject = new jsSHA("SHA-512", "TEXT");
       shaobject.update($("#password").val());
       passwordhash = shaobject.getHash("HEX");
+	  console.log(passwordhash);
 
       $.post(
         "ajax/verifypassword.php",
@@ -129,7 +130,7 @@
 		<ul  class="nav nav-tabs">
 			<li class="active"><a  href="#1b" data-toggle="tab">Overview</a></li>
 		<?php
-			include 'sqlserverparams.php';\
+			include 'sqlserverparams.php';
 
 			// Create connection
 			$conn = new mysqli($serverAddress, $serverUser, $serverPassword);
