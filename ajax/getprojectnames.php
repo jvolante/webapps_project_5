@@ -1,5 +1,5 @@
 <?php
-include 'sqlserverparams.php';
+include '/../sqlserverparams.php';
 
   $conn = new mysqli($serverAddress, $serverUser, $serverPassword);
 
@@ -7,7 +7,7 @@ include 'sqlserverparams.php';
     die("Database Connection Failed");
   }
 
-  $result = $conn->query("SELECT name, isopen FROM jk_projects ORDER BY name;");
+  $result = $conn->query("SELECT name, isopen FROM pca.jk_projects ORDER BY name;");
 
   $projectNames = array();
   while($row = mysqli_fetch_assoc($result)){

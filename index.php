@@ -41,7 +41,8 @@
       });
 
 	  window.onload = function(){
-		populateNames();
+      populateNames();
+      getProjects();
 	  }
 
 	  function populateNames() {
@@ -82,7 +83,49 @@
       );
       return false;
     }
-
+    
+    function getProjects(){
+	  var projectNames;
+	  var projects = [];
+	  $.post("ajax/getprojectnames.php",
+	  function(data){
+		updateGraphs(data);
+	  });
+    }
+	
+	
+	
+	function updateGraphs(data){
+		projectNames = $.parseJSON(data)
+		
+		$.each(projectNames, function(project, isOpen){
+			$.get(
+			  "ajax/getpointsforproject.php",
+			  {"projectname":project},
+			  function(data){
+				console.log(JSON.stringify(data));
+				$.each(data, function(teamid, votedata){
+					
+				});
+			  }
+			);
+		});
+	}
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
     </script>
   </head>
   <body>
