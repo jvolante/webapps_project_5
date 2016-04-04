@@ -83,6 +83,26 @@
       return false;
     }
 
+	
+	var projects = new Array();
+	function updateGraphs(){
+		var projJson
+		$.post
+		
+		$.post(
+        "ajax/getpointsforproject.php",
+        {"username":$("#user").val(), "password":passwordhash},
+        function(data){
+          if(data == "success"){
+            window.location.reload();
+          } else {
+            $("#message").html("Incorrect Password");
+          }
+        }
+      );
+		
+	}
+	
     </script>
   </head>
   <body>
