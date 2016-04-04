@@ -41,7 +41,8 @@
       });
 
 	  window.onload = function(){
-		populateNames();
+      populateNames();
+      getProjects();
 	  }
 
 	  function populateNames() {
@@ -82,26 +83,48 @@
       );
       return false;
     }
-
+    
+    function getProjects(){
+	  var projectNames;
+	  var projects = [];
+	  $.post("ajax/getprojectnames.php",
+	  function(data){
+		updateGraphs(data);
+	  });
+    }
 	
-	var projects = new Array();
-	function updateGraphs(){
-		var projJson
-		$.post
+	
+	
+	function updateGraphs(data){
+		projectNames = $.parseJSON(data)
 		
-		$.post(
-        "ajax/getpointsforproject.php",
-        {"username":$("#user").val(), "password":passwordhash},
-        function(data){
-          if(data == "success"){
-            window.location.reload();
-          } else {
-            $("#message").html("Incorrect Password");
-          }
-        }
-      );
-		
+		$.each(projectNames, function(project, isOpen){
+			$.get(
+			  "ajax/getpointsforproject.php",
+			  {"projectname":project},
+			  function(data){
+				console.log(JSON.stringify(data));
+				$.each(data, function(teamid, votedata){
+					
+				});
+			  }
+			);
+		});
 	}
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	
     </script>
   </head>
