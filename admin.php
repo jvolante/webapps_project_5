@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -101,7 +102,7 @@
             );
 
             $(".votebutton").click(function(event){
-              obj = $(this)
+              obj = $(this);
               projectname = obj.parent().html().match(/([\w \d]+?) </)[1];
               obj.html("Working...");
 
@@ -113,6 +114,7 @@
                 {'project':projectname, 'open':opening},
                 function(data){
                   if(data == "success"){
+                    $("#projectvotingmessage").html("");
                     if(opening){
                       obj.addClass("openproject");
                       obj.html("Close");

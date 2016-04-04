@@ -1,12 +1,13 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/drop-theme-arrows-bounce-dark.min.css"/>
-	<link rel="stylesheet" href="css/index-style.css"/>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/index-style.css"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="js/tether.min.js"></script>
     <script src="js/drop.min.js"></script>
     <script src="js/sha512.js"></script>
@@ -38,11 +39,11 @@
           });
         });
       });
-	  
+
 	  window.onload = function(){
 		populateNames();
 	  }
-	  
+
 	  function populateNames() {
 		$.post("ajax/getusers.php",
         function(data){
@@ -57,11 +58,11 @@
 			else {
 				$("#crossbarLinkArea").append('\n&bull;\n');
 				$("#crossbarLinkArea").append('<a href="http://judah.cedarville.edu/~' + key + '/cs4220.html" class="crossbar">' + value + '</a>');
-			}			
+			}
           });
         });
 	  }
-	  
+
       passwordgood = false;
       function verifyPassword() {
         shaobject = new jsSHA("SHA-512", "TEXT");
@@ -82,15 +83,6 @@
         );
         return passwordgood;
       }
-	  
-	  $.post(
-		"ajax/getteamsforproject.php",
-		{"projectname":"Project 2"},
-		function(data){
-			window.alert(data);
-		}
-	  );
-	  
     </script>
   </head>
   <body>
@@ -138,7 +130,13 @@
 		<ul  class="nav nav-tabs">
 			<li class="active"><a  href="#1b" data-toggle="tab">Overview</a></li>
 		<?php
+<<<<<<< HEAD
 			include 'sqlserverparams.php';
+=======
+      include 'sqlserverparams.php'
+
+			$dbname = "pca";
+>>>>>>> 7355d2b8781add9e9f6dd51d646ffb13bd3e4932
 
 			// Create connection
 			$conn = new mysqli($serverAddress, $serverUser, $serverPassword);

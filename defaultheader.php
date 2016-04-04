@@ -1,7 +1,3 @@
-<?php
-  // Start the session so we can use it in the page.
-  session_start();
-?>
 <!-- A bunch of tags that we need in the header of all of our pages. -->
 <script src="js/plugins.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
