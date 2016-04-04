@@ -10,7 +10,7 @@ if(isset($_GET["projectname"])){
     die("Database Connection Failed");
   }
 
-  $result = $conn->query("SELECT team_id, user FROM jk_teams WHERE project = $projectName ORDER BY team_id;");
+  $result = $conn->query("SELECT team_id, user FROM jk_teams WHERE project = '$projectName' ORDER BY team_id;");
 
   $teams = array();
   while($row = mysqli_fetch_assoc($result)){
