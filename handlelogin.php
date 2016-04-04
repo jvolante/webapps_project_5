@@ -3,13 +3,15 @@
   if(isset($_POST["username"]) && isset($_POST["password"])) {
     $username = $_POST["username"];
     $password = $_POST["password"];
-    $conn = new mysqli("james", "CS4220", "");
+
+    include 'sqlserverparams.php';
+    $conn = new mysqli($serverAddress, $serverUser, $serverPassword);
 
     if($conn->connect_error){
       die("Database Connection Failed");
     }
 
-    $result = $conn->query("SELECT password_hash, name FROM jk_users WHERE linux_user = $username;");
+    $result = $conn->query("SELECT password_hash, name FROM jk_users WHERE linux_user = '$username';");
 
     if($result->num_rows == 0){
       die("Error, no entry was found for $username");
