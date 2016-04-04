@@ -63,7 +63,6 @@
         });
 	  }
 
-<<<<<<< HEAD
     function verifyPassword() {
       shaobject = new jsSHA("SHA-512", "TEXT");
       shaobject.update($("#password").val());
