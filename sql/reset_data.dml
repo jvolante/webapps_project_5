@@ -1,5 +1,5 @@
-DELETE FROM writins;
-DELETE FROM votes;
-DELETE FROM team;
-DELETE FROM projects;
-DELETE FROM users;
+DELETE FROM jk_writins;
+DELETE FROM jk_votes;
+DELETE FROM jk_team;
+DELETE FROM jk_projects;
+DELETE FROM jk_users;
