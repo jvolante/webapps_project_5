@@ -129,13 +129,9 @@
 		<ul  class="nav nav-tabs">
 			<li class="active"><a  href="#1b" data-toggle="tab">Overview</a></li>
 		<?php
-<<<<<<< HEAD
-			include 'sqlserverparams.php';
-=======
-      include 'sqlserverparams.php'
+      include 'sqlserverparams.php';
 
 			$dbname = "pca";
->>>>>>> 7355d2b8781add9e9f6dd51d646ffb13bd3e4932
 
 			// Create connection
 			$conn = new mysqli($serverAddress, $serverUser, $serverPassword);
