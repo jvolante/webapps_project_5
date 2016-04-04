@@ -111,7 +111,7 @@
       <p id="message"></p>
       Name: <select name="user" id="user" style="color:black"></select><br>
       Password: <input type="password" style="color:black" name = "password" id="password"/><br>
-      <input type="submit" style="color:black" value="Log In"/>
+      <input type="submit" style="color:black" value="Log In"/><br>
     </form>
 
     <!-- /// JUMBOTRON \\\ -->
@@ -127,11 +127,11 @@
         <div class="action-wrapper">
           <p>
             <a href="#projects" class="cd-btn main-action" role="button">View Projects</a>
-            <a href="404.html" class="cd-btn" id="signin" target="_blank" role="button"><?php
+            <a href="404.html" class="cd-btn" id="signin" target="_blank" role="button" style="color:white;text-decoration:none;"><?php
               // Generate sign in button.
               if(isset($_SESSION[$userParam])){
                 $name = $_SESSION[$nameParam];
-                echo 'Welcome $name! | (Not you?)';
+                echo 'Welcome ' . $name . '! | (Not you?)';
               } else {
                 echo 'Sign in';
               }
