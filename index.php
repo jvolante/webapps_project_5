@@ -22,7 +22,7 @@
         $("#signin").click(function (){ return false; });
 
         // Populate the list of usernames.
-        $.post("ajax/getuseroptions.php",
+        $.post("ajax/getusers.php",
         function(data){
           data = $.parseJSON(data);
           $.each(data, function(key, value){
@@ -49,6 +49,7 @@
         function(data){
           data = $.parseJSON(data);
 		  isFirst = true
+
           $.each(data, function(key, value){
 			if(isFirst){
 				$("#crossbarLinkArea").append('<a href="http://judah.cedarville.edu/~' + key + '/cs4220.html" class="crossbar">' + value + '</a>');
@@ -62,6 +63,7 @@
         });
 	  }
 
+<<<<<<< HEAD
     function verifyPassword() {
       shaobject = new jsSHA("SHA-512", "TEXT");
       shaobject.update($("#password").val());
@@ -80,7 +82,6 @@
       );
       return false;
     }
-
 
     </script>
   </head>
@@ -129,9 +130,13 @@
 		<ul  class="nav nav-tabs">
 			<li class="active"><a  href="#1b" data-toggle="tab">Overview</a></li>
 		<?php
+<<<<<<< HEAD
+			include 'sqlserverparams.php';
+=======
       include 'sqlserverparams.php'
 
 			$dbname = "pca";
+>>>>>>> 7355d2b8781add9e9f6dd51d646ffb13bd3e4932
 
 			// Create connection
 			$conn = new mysqli($serverAddress, $serverUser, $serverPassword);
@@ -165,6 +170,7 @@
 			<div class="tab-content clearfix">
 				<div class="tab-pane active" id="1b">
 					<h3>This is the default tab</h3>
+
 				</div>
 				<div class="tab-pane" id="p1">
 					<h3>This is project 1</h3>

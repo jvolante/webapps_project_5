@@ -15,3 +15,7 @@ a.crossbar {
 	white-space: nowrap;
 	color:white;
 }
+
+a.crossbar:hover {
+	color:#fb5e58;
+}
