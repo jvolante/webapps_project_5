@@ -63,26 +63,25 @@
         });
 	  }
 
-      passwordgood = false;
-      function verifyPassword() {
-        shaobject = new jsSHA("SHA-512", "TEXT");
-        shaobject.update($("#password").val());
-        passwordhash = shaobject.getHash("HEX");
-		
-        $.post(
-          "ajax/verifypassword.php",
-          {"username":$("#user").val(), "password":passwordhash},
-          function(data){
-            if(data == "success"){
-              passwordgood = true;
-              $("#loginform").submit();
-            } else {
-              $("#message").html("Incorrect Password");
-            }
+    function verifyPassword() {
+      shaobject = new jsSHA("SHA-512", "TEXT");
+      shaobject.update($("#password").val());
+      passwordhash = shaobject.getHash("HEX");
+
+      $.post(
+        "ajax/verifypassword.php",
+        {"username":$("#user").val(), "password":passwordhash},
+        function(data){
+          if(data == "success"){
+            window.location.reload();
+          } else {
+            $("#message").html("Incorrect Password");
           }
-        );
-        return passwordgood;
-      }
+        }
+      );
+      return false;
+    }
+
     </script>
   </head>
   <body>
@@ -164,7 +163,7 @@
 			<div class="tab-content clearfix">
 				<div class="tab-pane active" id="1b">
 					<h3>This is the default tab</h3>
-					
+
 				</div>
 				<div class="tab-pane" id="p1">
 					<h3>This is project 1</h3>
