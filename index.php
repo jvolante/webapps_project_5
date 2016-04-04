@@ -102,13 +102,12 @@
 		<ul  class="nav nav-tabs">
 			<li class="active"><a  href="#1b" data-toggle="tab">Overview</a></li>
 		<?php
-			$servername = "localhost";
-			$username = "extern2";
-			$password = "mypassword";
+      include 'sqlserverparams.php'
+      
 			$dbname = "pca";
 
 			// Create connection
-			$conn = new mysqli($servername, $username, $password);
+			$conn = new mysqli($serverAddress, $serverUser, $serverPassword);
 
 			// Check connection
 			if ($conn->connect_error) {
