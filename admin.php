@@ -6,6 +6,9 @@
     <?php include 'defaultheader.php' ?>
     <?php include 'handlelogin.php' ?>
     <?php include 'params.php' ?>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index-style.css"/>
     <?php
     // Make sure user is admin
     if(!isset($_SESSION[$userParam]) || $_SESSION[$userParam] != 'admin'){
@@ -92,12 +95,13 @@
 
       startingproject = 0;
 
-
       $(function(){
+        $('#tabs a:last').tab('show');
         updateUsersLists();
-        $.getJSON(
+        $.get(
           'ajax/getprojectnames.php',
           function(data){
+            data = $.parseJSON(data);
             $.each(
               data,
               function(key, value){
@@ -163,8 +167,8 @@
         $("#addusersbutton").click(function(){
           if($("#addusersbutton").html() == "Add Users"){
             $("#addusersmessage").html("");
-            re = /(.{1,8}):([\w\d]{1,20})/;
-            s = $("newusers").val();
+            re = /(.{1,20})\s*:\s*([\w\d]{1,8})/gm;
+            s = $("#newusers").val();
 
             userlist = {};
             while(m = re.exec(s)){
@@ -239,11 +243,11 @@
     </style>
   </head>
   <body>
-  <ul class="nav nav-tabs">
-    <li><a href="#users">Users</a></li>
-    <li><a href="#teams">Teams</a></li>
-    <li><a href="#voting">Voting</a></li>
-    <li><a href="#setup">Setup</a></li>
+  <ul class="nav nav-tabs" id="tabs">
+    <li class="active"><a data-toggle="tab" data-target="#users">Users</a></li>
+    <li><a data-toggle="tab" data-target="#teams">Teams</a></li>
+    <li><a data-toggle="tab" data-target="#voting">Voting</a></li>
+    <li><a data-toggle="tab" data-target="#setup">Setup</a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane fade" id="users">
@@ -255,14 +259,12 @@
       </table>
       <div class="addusers">
         <h2>Add Users</h2>
-        Add users using format name:linuxuser
+        Add users using format <i>name : linuxuser</i><br>
         <textarea rows="8" cols="40" id="newusers"></textarea>
         <div id="addusersmessage">
 
         </div>
-        <div class="btn" id="addusersbutton">
-          Add Users
-        </div>
+        <div class="btn" id="addusersbutton">Add Users</div>
       </div>
     </div>
     <div class="tab-pane fade" id="teams">
