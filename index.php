@@ -48,6 +48,7 @@
         function(data){
           data = $.parseJSON(data);
 		  isFirst = true
+
           $.each(data, function(key, value){
 			if(isFirst){
 				$("#crossbarLinkArea").append('<a href="http://judah.cedarville.edu/~' + key + '/cs4220.html" class="crossbar">' + value + '</a>');
