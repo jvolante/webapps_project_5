@@ -1,4 +1,6 @@
 <?php
+  session_start();
+
   if(isset($_POST["password"]) && isset($_POST["username"])){
     $putitivePassword = $_POST["password"];
     $username = $_POST["username"];
@@ -17,6 +19,8 @@
     } else {
       $row = $result->fetch_assoc();
       if($row["password_hash"] == $putitivePassword){
+        $_SESSION[$userParam] = $username;
+        $_SESSION[$nameParam] = $row["name"];
         echo "success";
       } else {
         die("Incorrect Password.");

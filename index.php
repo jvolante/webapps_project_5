@@ -62,27 +62,24 @@
         });
 	  }
 
+    function verifyPassword() {
+      shaobject = new jsSHA("SHA-512", "TEXT");
+      shaobject.update($("#password").val());
+      passwordhash = shaobject.getHash("HEX");
 
-      passwordgood = false;
-      function verifyPassword() {
-        shaobject = new jsSHA("SHA-512", "TEXT");
-        shaobject.update($("#password").val());
-        passwordhash = shaobject.getHash("HEX");
-
-        $.post(
-          "ajax/verifypassword.php",
-          {"username":$("#user").val(), "password":passwordhash},
-          function(data){
-            if(data == "success"){
-              passwordgood = true;
-              $("#loginform").submit();
-            } else {
-              $("#message").html("Incorrect Password");
-            }
+      $.post(
+        "ajax/verifypassword.php",
+        {"username":$("#user").val(), "password":passwordhash},
+        function(data){
+          if(data == "success"){
+            window.location.reload();
+          } else {
+            $("#message").html("Incorrect Password");
           }
-        );
-        return passwordgood;
-      }
+        }
+      );
+      return false;
+    }
 
 
     </script>
