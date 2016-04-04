@@ -37,7 +37,7 @@
         $("currentusers").append("");
         $("userslistteams").append("");
         $.getJSON(
-          'ajax/getuseroptions.php',
+          'ajax/getusers.php',
           function(data){
             $.each(
               data,
