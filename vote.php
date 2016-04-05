@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
   <?php
-
+    include "params.php";
     $projectParam = 'project';
     $requiredParams = array($projectParam);
 
@@ -70,7 +70,7 @@
   </head>
   <body>
     <?php
-      if(!isset($userParam)){
+      if(!isset($_SESSION[$userParam])){
         die('You need to log in to vote');
       }
     ?>
