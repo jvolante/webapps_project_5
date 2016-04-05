@@ -51,12 +51,14 @@
           $.post(
             'ajax/castvote.php',
             {
+              'project':<?php echo $_GET[$projectParam]; ?>,
               '1stplace':$('#1stplace').val(),
               '2ndplace':$('#2ndplace').val(),
               '3rdplace':$('#3rdplace').val(),
               'writeins':JSON.stringify({'user':$("#writins").val(), 'writein':$("#writein").val()})
             }
           )
+          window.location = "index.php";
         });
         $.post(
           'ajax/getteamsforproject.php',
