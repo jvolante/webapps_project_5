@@ -116,6 +116,8 @@
 		$.each(projectNames, function(project, isOpen){
 			if(isOpen == 1){
 				isAProjectOpen = true;
+        var projString = encodeURIComponent(project.trim());
+        document.getElementById("voteLink").href="/vote.php?project=" + projString;
 			}
 			$.get(
 			  "ajax/getpointsforproject.php",
@@ -305,10 +307,15 @@
 						echo "<li><a href=\"#"  . $projectID .  "\" data-toggle=\"tab\">" . $row['name'] . "</a></li>";
 					}
 				}
-				$name = $_SESSION[$nameParam];
-				if($name == "admin"){
-					echo "<li><a href=\"admin.php\">Admin</a></li>";
-				}
+        if(isset($_SESSION[$userParam])){
+          $name = $_SESSION[$nameParam];
+          if($name == "admin"){
+            echo "<li><a href=\"admin.php\">Admin</a></li>";
+          }
+          else {
+            echo "<li><a href=\"#\" id=\"voteLink\">Vote</a></li>";
+          }
+        }
 				
 				
 				echo "</ul>";
