@@ -35,9 +35,15 @@ CREATE TABLE jk_votes(
   PRIMARY KEY (user, project),
   FOREIGN KEY (user) REFERENCES jk_users(linux_user),
   FOREIGN KEY (project) REFERENCES jk_projects(name),
-  FOREIGN KEY (first) REFERENCES jk_team(team_id),
-  FOREIGN KEY (second) REFERENCES jk_team(team_id),
+  FOREIGN KEY (first) REFERENCES jk_team(team_id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+  FOREIGN KEY (second) REFERENCES jk_team(team_id)
+  	ON DELETE CASCADE
+	ON UPDATE CASCADE,
   FOREIGN KEY (third) REFERENCES jk_team(team_id)
+  	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 CREATE TABLE jk_writins(

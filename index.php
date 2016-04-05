@@ -280,7 +280,7 @@
 				die("Connection failed: " . $conn->connect_error);
 			}
 
-			$result = $conn->query("SELECT name FROM pca.jk_projects;");
+			$result = $conn->query("SELECT name FROM $dbname.jk_projects;");
 
 			if (! $result){
 				// probably a syntax error in your SQL,
@@ -313,7 +313,7 @@
 				
 				echo "</ul>";
 				echo "<div class=\"tab-content clearfix\">";
-				$result = $conn->query("SELECT name FROM pca.jk_projects;");
+				$result = $conn->query("SELECT name FROM $dbname.jk_projects;");
 				$firstTab = True;
 				while($row = mysqli_fetch_assoc($result)){
 					$projectName = $row['name'];
