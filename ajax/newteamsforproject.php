@@ -1,5 +1,7 @@
 <?php
 if (isset($_POST["teams"]) && isset($_POST["project"])) {
+  include '../sqlserverparams.php';
+
   $currentProject = $_POST["project"];
 
   $conn = new mysqli($serverAddress, $serverUser, $serverPassword);
@@ -8,13 +10,13 @@ if (isset($_POST["teams"]) && isset($_POST["project"])) {
     die("Database Connection Failed");
   }
 
-  $conn->query("DELETE FROM jk_team WHERE project='$currentProject'") or die("SQL error on delete");
+  $conn->query("DELETE FROM pca.jk_team WHERE project='$currentProject';") or die("Error on delete");
 
   $teams = json_decode($_POST["teams"]) or die("JSON syntax error");
 
   foreach ($teams as $teamid => $members) {
     foreach ($members as $key => $name) {
-      $conn->query("INSERT INTO jk_team VALUES ($teamid, '$currentProject', '$name');") or die("SQL Error on insert");
+      $conn->query("INSERT INTO pca.jk_team VALUES ($teamid, '$currentProject', '$name');");
     }
   }
   echo 'success';

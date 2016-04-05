@@ -6,6 +6,9 @@
     <?php include 'defaultheader.php' ?>
     <?php include 'handlelogin.php' ?>
     <?php include 'params.php' ?>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index-style.css"/>
     <?php
     // Make sure user is admin
     if(!isset($_SESSION[$userParam]) || $_SESSION[$userParam] != 'admin'){
@@ -20,11 +23,11 @@
         die("Database Connection Failed");
       }
 
-      $conn->query("DELETE FROM jk_writins;");
-      $conn->query("DELETE FROM jk_votes;");
-      $conn->query("DELETE FROM jk_team;");
-      $conn->query("DELETE FROM jk_projects;");
-      $conn->query("DELETE FROM jk_users WHERE name <> 'admin';");
+      $conn->query("DELETE FROM pca.jk_writins;");
+      $conn->query("DELETE FROM pca.jk_votes;");
+      $conn->query("DELETE FROM pca.jk_team;");
+      $conn->query("DELETE FROM pca.jk_projects;");
+      $conn->query("DELETE FROM pca.jk_users WHERE name <> 'admin';");
 
       for ($i=1; $i <= intval($_POST["numprojects"]); $i++) {
         $conn->query("INSERT INTO jk_projects VALUES ('Project $i', FALSE);");
@@ -33,38 +36,44 @@
     ?>
     <title>Site Setup</title>
     <script type="text/javascript">
+      $.fn.exists = function () {
+        return this.length !== 0;
+      }
+
       function updateUsersLists() {
-        $("currentusers").append("");
-        $("userslistteams").append("");
+        $("#currentusers").append("");
+        $("#userslistteams").append("");
         $.getJSON(
           'ajax/getusers.php',
           function(data){
             $.each(
               data,
               function(key,value){
-                $("currentusers").append("<tr><td>" + value + "</td><td>" + key + "</td></tr>");
-                $("userslistteams").append("<li>" + value + " : " + key + "</li>");
+                $("#currentusers").append("<tr><td>" + value + "</td><td>" + key + "</td></tr>");
+                $("#userslistteams").append("<li>" + value + " : " + key + "</li>");
               });
           });
       }
 
       function popluateTeamBoxes(projectname) {
         $(".teams").html("");
-        $.getJSON(
+        $.get(
           'ajax/getteamsforproject.php',
           {'projectname':projectname},
           function (data) {
             if(data == "none"){
               currentteam = 1;
               $.getJSON(
-                'getusers.php',
+                'ajax/getusers.php',
                 function(data){
                   $.each(data, function(linuxuser, name){
-                    $(".teams").append('<li><ul class="team" id="team' + currentteam + '"><li>' + linuxuser + '</li></ul></li>');
+                    $(".teams").append('<li id="' + linuxuser + '">' + linuxuser + ': <input style="width: 40px;" type="number" value="' + currentteam +'"></li>');
+                    currentteam++;
                   });
                 }
               );
             } else {
+              data = $.parseJSON(data);
               $.each(
                 data,
                 function(team_id, members){
@@ -72,39 +81,35 @@
                   $.each(
                     members,
                     function(index, name){
-                      teamlist += "<li>" + name + "</li>";
+                      $(".teams").append('<li id="' + name + '">' + name + '<input style="width: 40px;" type="number" value="' + team_id +'"></li>')
                     }
                   );
-                  $(".teams").append('<li><ul class="team" id="team' + team_id + '">' + teamlist + '</ul></li>');
                 }
               );
             }
-            // Make the drag and drop crap
-            $(".team").each(function(index){
-              sortable = new Sortable(this, {
-                group: 'teams',
-                sort: 'true'
-              });
-            });
           }
         );
       }
 
       startingproject = 0;
 
-
       $(function(){
+        $('#selectproject').change(function(event){
+          popluateTeamBoxes($('#selectproject').val());
+        });
+        $('#tabs a:last').tab('show');
         updateUsersLists();
-        $.getJSON(
+        $.get(
           'ajax/getprojectnames.php',
           function(data){
+            data = $.parseJSON(data);
             $.each(
               data,
               function(key, value){
                 if(value){
-                  projectbutton = '<div class="votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Close</div>';
+                  projectbutton = '<div class="votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Open</div>';
                 } else {
-                  projectbutton = '<div class="openproject votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Open</div>';
+                  projectbutton = '<div class="openproject votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Close</div>';
                 }
                 $("#selectproject").append('<option value="' + key + '">' + key + "</option>");
                 if(startingproject == 0){
@@ -163,8 +168,8 @@
         $("#addusersbutton").click(function(){
           if($("#addusersbutton").html() == "Add Users"){
             $("#addusersmessage").html("");
-            re = /(.{1,8}):([\w\d]{1,20})/;
-            s = $("newusers").val();
+            re = /(.{1,20})\s*:\s*([\w\d]{1,8})/gm;
+            s = $("#newusers").val();
 
             userlist = {};
             while(m = re.exec(s)){
@@ -190,20 +195,19 @@
 
         $("#setteamsbutton").click(function(){
           data = {};
-          $(".team").each(function(index){
-            team_id = parseInt($(this).id().match(/team(\d+)/)[1]);
-            members = [];
-            $(this).children('li').each(function(i){
-              members.push($(this).html());
-            });
-            data[team_id] = members;
+          $(".teams li").each(function(){
+            team_id = parseInt($(this).children("input").val());
+            if(!(team_id in data)){
+              data[team_id] = [];
+            }
+            data[team_id].push($(this).attr('id'));
           });
 
           $("#setteamsbutton").html('Working...');
 
           $.post(
-            'ajax/newteamsforporject.php',
-            {'teams':JSON.stringify(data)},
+            'ajax/newteamsforproject.php',
+            {'teams':JSON.stringify(data), 'project':$('#selectproject').val()},
             function(data){
               $("#setteamsbutton").html('Set Teams');
               if(data == 'success'){
@@ -239,11 +243,11 @@
     </style>
   </head>
   <body>
-  <ul class="nav nav-tabs">
-    <li><a href="#users">Users</a></li>
-    <li><a href="#teams">Teams</a></li>
-    <li><a href="#voting">Voting</a></li>
-    <li><a href="#setup">Setup</a></li>
+  <ul class="nav nav-tabs" id="tabs">
+    <li class="active"><a data-toggle="tab" data-target="#users">Users</a></li>
+    <li><a data-toggle="tab" data-target="#teams">Teams</a></li>
+    <li><a data-toggle="tab" data-target="#voting">Voting</a></li>
+    <li><a data-toggle="tab" data-target="#setup">Setup</a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane fade" id="users">
@@ -255,14 +259,12 @@
       </table>
       <div class="addusers">
         <h2>Add Users</h2>
-        Add users using format name:linuxuser
+        Add users using format <i>name : linuxuser</i><br>
         <textarea rows="8" cols="40" id="newusers"></textarea>
         <div id="addusersmessage">
 
         </div>
-        <div class="btn" id="addusersbutton">
-          Add Users
-        </div>
+        <div class="btn" id="addusersbutton">Add Users</div>
       </div>
     </div>
     <div class="tab-pane fade" id="teams">
