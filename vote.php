@@ -51,24 +51,29 @@
           $.post(
             'ajax/castvote.php',
             {
-              'project':<?php echo $_GET[$projectParam]; ?>,
+              'project':<?php echo '"' . $currentProject . '"'; ?>,
               '1stplace':$('#1stplace').val(),
               '2ndplace':$('#2ndplace').val(),
               '3rdplace':$('#3rdplace').val(),
               'writeins':JSON.stringify({'user':$("#writins").val(), 'writein':$("#writein").val()})
+            },
+            function(data){
+              i = 1;
             }
           )
           window.location = "index.php";
         });
-        $.post(
+        $.get(
           'ajax/getteamsforproject.php',
-          {'project':<?php echo $_GET[$projectParam]; ?>},
+          {'projectname':<?php echo '"' . $currentProject . '"'; ?>},
           function(data){
+            data = $.parseJSON(data);
             $.each(
               data,
               function(team_id, members){
                 memberslist = "";
                 $.each(
+                  members,
                   function(index, user){
                     memberslist +=  linux_to_name[user] + ', ';
                   }
@@ -88,24 +93,28 @@
       }
     ?>
     <div class="1stplace">
+      1st
       <select class="teams" name="1stplace" id="1stplace">
 
       </select>
     </div>
 
     <div class="2ndplace">
+      2nd
       <select class="teams" name="2ndplace" id="2ndplace">
 
       </select>
     </div>
 
     <div class="3rdplace">
+      3rd
       <select class="teams" name="3rdplace" id="3rdplace">
 
       </select>
     </div>
 
     <div class="writeins">
+      write in:
       <select class="teams" name="writeins" id="writeins">
 
       </select>

@@ -10,10 +10,10 @@ if(isset($_GET["projectname"])){
     die("Database Connection Failed");
   }
 
-  $result = $conn->query("SELECT team_id, user FROM $dbname.jk_team WHERE project = '$projectName' ORDER BY team_id;");
+  $result = $conn->query("SELECT team_id, user FROM $dbname.jk_team WHERE project = '$projectName' ORDER BY team_id;") or die("SQL ERROR");
 
   if($result->num_rows == 0){
-    echo "none";
+    echo "none $projectName";
   } else {
     $teams = array();
     while($row = mysqli_fetch_assoc($result)){
