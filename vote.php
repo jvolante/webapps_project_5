@@ -32,7 +32,7 @@
       		die("Connection failed: " . $conn->connect_error);
       	}
 
-      	$result = $conn->query("SELECT linux_user, name FROM pca.jk_users;");
+      	$result = $conn->query("SELECT linux_user, name FROM $dbname.jk_users;");
       	if (! $result){
       		// probably a syntax error in your SQL,
       		// but could be some other error

@@ -10,7 +10,7 @@ if(isset($_GET["projectname"])){
 	die("Database Connection Failed");
 	}
 
-	$result = $conn->query("SELECT linux_user, name FROM pca.jk_users;");
+	$result = $conn->query("SELECT linux_user, name FROM $dbname.jk_users;");
 
 	if (! $result){ 
 		// probably a syntax error in your SQL, 
@@ -22,7 +22,7 @@ if(isset($_GET["projectname"])){
 		$nameMap[$row['linux_user']] = $row['name'];
 	}
 	
-	$result = $conn->query("SELECT distinct team_id, user FROM pca.jk_team WHERE project = '$projectName' ORDER BY team_id;");
+	$result = $conn->query("SELECT distinct team_id, user FROM $dbname.jk_team WHERE project = '$projectName' ORDER BY team_id;");
 
 	$teams = array();
 	while($row = mysqli_fetch_assoc($result)){
@@ -34,7 +34,7 @@ if(isset($_GET["projectname"])){
 		array_push($teams[$row["team_id"]], $name);
 	}
 	
-	$result = $conn->query("SELECT * FROM pca.jk_project_votes;");
+	$result = $conn->query("SELECT * FROM $dbname.jk_project_votes;");
 	
 	$teamScoreMap = array();
 	while($row = mysqli_fetch_assoc($result)){

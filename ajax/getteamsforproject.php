@@ -10,7 +10,7 @@ if(isset($_GET["projectname"])){
     die("Database Connection Failed");
   }
 
-  $result = $conn->query("SELECT team_id, user FROM pca.jk_team WHERE project = '$projectName' ORDER BY team_id;");
+  $result = $conn->query("SELECT team_id, user FROM $dbname.jk_team WHERE project = '$projectName' ORDER BY team_id;");
 
   if($result->num_rows == 0){
     echo "none";
