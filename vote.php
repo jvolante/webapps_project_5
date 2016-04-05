@@ -23,7 +23,7 @@
     </title>
     <script type="text/javascript">
       linux_to_name = <?php
-      	include '/../sqlserverparams.php';
+      	include 'sqlserverparams.php';
 
       	// Create connection
       	$conn = new mysqli($serverAddress, $serverUser, $serverPassword);
@@ -49,7 +49,7 @@
       $(function(){
         $.post(
           'ajax/getteamsforproject.php',
-          {'project':"<?php echo $_GET[$projectParam]; ?>"},
+          {'project':<?php echo $_GET[$projectParam]; ?>},
           function(data){
             $.each(
               data,
