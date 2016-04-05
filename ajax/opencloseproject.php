@@ -11,7 +11,7 @@ if(isset($_POST['project']) && isset($_POST['open'])){
     die("Database Connection Failed");
   }
 
-  $conn->query("UPDATE pca.jk_projects SET isopen=$opening WHERE name='$project'") or die("SQL error");
+  $conn->query("UPDATE $dbname.jk_projects SET isopen=$opening WHERE name='$project'") or die("SQL error");
   echo('success');
 } else {
   die('Incorrect parameters');

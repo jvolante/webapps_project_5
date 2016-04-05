@@ -23,11 +23,11 @@
         die("Database Connection Failed");
       }
 
-      $conn->query("DELETE FROM pca.jk_writins;");
-      $conn->query("DELETE FROM pca.jk_votes;");
-      $conn->query("DELETE FROM pca.jk_team;");
-      $conn->query("DELETE FROM pca.jk_projects;");
-      $conn->query("DELETE FROM pca.jk_users WHERE name <> 'admin';");
+      $conn->query("DELETE FROM $dbname.jk_writins;");
+      $conn->query("DELETE FROM $dbname.jk_votes;");
+      $conn->query("DELETE FROM $dbname.jk_team;");
+      $conn->query("DELETE FROM $dbname.jk_projects;");
+      $conn->query("DELETE FROM $dbname.jk_users WHERE name <> 'admin';");
 
       for ($i=1; $i <= intval($_POST["numprojects"]); $i++) {
         $conn->query("INSERT INTO jk_projects VALUES ('Project $i', FALSE);");
@@ -248,6 +248,7 @@
     <li><a data-toggle="tab" data-target="#teams">Teams</a></li>
     <li><a data-toggle="tab" data-target="#voting">Voting</a></li>
     <li><a data-toggle="tab" data-target="#setup">Setup</a></li>
+	<li><a href="index.php" data-target="#admin">Home</a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane fade" id="users">
@@ -282,7 +283,7 @@
   				die("Connection failed: " . $conn->connect_error);
   			}
 
-  			$result = $conn->query("SELECT name FROM pca.jk_projects;");
+  			$result = $conn->query("SELECT name FROM $dbname.jk_projects;");
 
   			if (! $result){
   				// probably a syntax error in your SQL,
@@ -323,6 +324,9 @@
         <input type="submit" name="name" value="Reset Data">
       </form>
     </div>
+	<div class="tab-pane fade" id="admin">
+		<h1>Welcome to the admin!</h1>
+	</div>
   </div>
   </body>
 </html>

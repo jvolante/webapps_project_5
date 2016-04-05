@@ -32,7 +32,7 @@
       		die("Connection failed: " . $conn->connect_error);
       	}
 
-      	$result = $conn->query("SELECT linux_user, name FROM pca.jk_users;");
+      	$result = $conn->query("SELECT linux_user, name FROM $dbname.jk_users;");
       	if (! $result){
       		// probably a syntax error in your SQL,
       		// but could be some other error
@@ -47,6 +47,19 @@
       ?>;
 
       $(function(){
+        $("#castbutton").click(function(){
+          $.post(
+            'ajax/castvote.php',
+            {
+              'project':<?php echo $_GET[$projectParam]; ?>,
+              '1stplace':$('#1stplace').val(),
+              '2ndplace':$('#2ndplace').val(),
+              '3rdplace':$('#3rdplace').val(),
+              'writeins':JSON.stringify({'user':$("#writins").val(), 'writein':$("#writein").val()})
+            }
+          )
+          window.location = "index.php";
+        });
         $.post(
           'ajax/getteamsforproject.php',
           {'project':<?php echo $_GET[$projectParam]; ?>},
@@ -75,21 +88,29 @@
       }
     ?>
     <div class="1stplace">
-      <select class="teams" name="1stplace">
+      <select class="teams" name="1stplace" id="1stplace">
 
       </select>
     </div>
 
     <div class="2ndplace">
-      <select class="teams" name="2ndplace">
+      <select class="teams" name="2ndplace" id="2ndplace">
 
       </select>
     </div>
 
     <div class="3rdplace">
-      <select class="teams" name="3rdplace">
+      <select class="teams" name="3rdplace" id="3rdplace">
 
       </select>
     </div>
+
+    <div class="writeins">
+      <select class="teams" name="writeins" id="writeins">
+
+      </select>
+      <textarea name="writein" id="writein" rows="8" cols="40"></textarea>
+    </div>
+    <button type="button" name="button" id="castbutton">Cast Vote</button>
   </body>
 </html>
