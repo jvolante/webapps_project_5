@@ -67,7 +67,8 @@
                 'ajax/getusers.php',
                 function(data){
                   $.each(data, function(linuxuser, name){
-                    $(".teams").append('<li><ul class="team" id="team' + currentteam + '"><li>' + linuxuser + '</li></ul></li>');
+                    $(".teams").append('<li id="' + linuxuser + '">' + linuxuser + ': <input style="width: 40px;" type="number" value="' + currentteam +'"></li>');
+                    currentteam++;
                   });
                 }
               );
@@ -80,21 +81,12 @@
                   $.each(
                     members,
                     function(index, name){
-                      teamlist += "<li>" + name + "</li>";
+                      $(".teams").append('<li id="' + name + '">' + name + '<input style="width: 40px;" type="number" value="' + team_id +'"></li>')
                     }
                   );
-                  $(".teams").append('<li><ul class="team" id="team' + team_id + '">' + teamlist + '</ul></li>');
                 }
               );
             }
-
-            // Make the drag and drop crap
-            $(".team").each(function(index){
-              sortable = new Sortable(this, {
-                group: 'teams',
-                sort: 'true'
-              });
-            });
           }
         );
       }
@@ -102,6 +94,9 @@
       startingproject = 0;
 
       $(function(){
+        $('#selectproject').change(function(event){
+          popluateTeamBoxes($('#selectproject').val());
+        });
         $('#tabs a:last').tab('show');
         updateUsersLists();
         $.get(
@@ -200,20 +195,19 @@
 
         $("#setteamsbutton").click(function(){
           data = {};
-          $(".team").each(function(index){
-            team_id = parseInt($(this).id().match(/team(\d+)/)[1]);
-            members = [];
-            $(this).children('li').each(function(i){
-              members.push($(this).html());
-            });
-            data[team_id] = members;
+          $(".teams li").each(function(){
+            team_id = parseInt($(this).children("input").val());
+            if(!(team_id in data)){
+              data[team_id] = [];
+            }
+            data[team_id].push($(this).attr('id'));
           });
 
           $("#setteamsbutton").html('Working...');
 
           $.post(
-            'ajax/newteamsforporject.php',
-            {'teams':JSON.stringify(data)},
+            'ajax/newteamsforproject.php',
+            {'teams':JSON.stringify(data), 'project':$('#selectproject').val()},
             function(data){
               $("#setteamsbutton").html('Set Teams');
               if(data == 'success'){
