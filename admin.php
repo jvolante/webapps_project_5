@@ -23,11 +23,11 @@
         die("Database Connection Failed");
       }
 
-      $conn->query("DELETE FROM jk_writins;");
-      $conn->query("DELETE FROM jk_votes;");
-      $conn->query("DELETE FROM jk_team;");
-      $conn->query("DELETE FROM jk_projects;");
-      $conn->query("DELETE FROM jk_users WHERE name <> 'admin';");
+      $conn->query("DELETE FROM pca.jk_writins;");
+      $conn->query("DELETE FROM pca.jk_votes;");
+      $conn->query("DELETE FROM pca.jk_team;");
+      $conn->query("DELETE FROM pca.jk_projects;");
+      $conn->query("DELETE FROM pca.jk_users WHERE name <> 'admin';");
 
       for ($i=1; $i <= intval($_POST["numprojects"]); $i++) {
         $conn->query("INSERT INTO jk_projects VALUES ('Project $i', FALSE);");
@@ -36,31 +36,35 @@
     ?>
     <title>Site Setup</title>
     <script type="text/javascript">
+      $.fn.exists = function () {
+        return this.length !== 0;
+      }
+
       function updateUsersLists() {
-        $("currentusers").append("");
-        $("userslistteams").append("");
+        $("#currentusers").append("");
+        $("#userslistteams").append("");
         $.getJSON(
           'ajax/getusers.php',
           function(data){
             $.each(
               data,
               function(key,value){
-                $("currentusers").append("<tr><td>" + value + "</td><td>" + key + "</td></tr>");
-                $("userslistteams").append("<li>" + value + " : " + key + "</li>");
+                $("#currentusers").append("<tr><td>" + value + "</td><td>" + key + "</td></tr>");
+                $("#userslistteams").append("<li>" + value + " : " + key + "</li>");
               });
           });
       }
 
       function popluateTeamBoxes(projectname) {
         $(".teams").html("");
-        $.getJSON(
+        $.get(
           'ajax/getteamsforproject.php',
           {'projectname':projectname},
           function (data) {
             if(data == "none"){
               currentteam = 1;
               $.getJSON(
-                'getusers.php',
+                'ajax/getusers.php',
                 function(data){
                   $.each(data, function(linuxuser, name){
                     $(".teams").append('<li><ul class="team" id="team' + currentteam + '"><li>' + linuxuser + '</li></ul></li>');
@@ -68,6 +72,7 @@
                 }
               );
             } else {
+              data = $.parseJSON(data);
               $.each(
                 data,
                 function(team_id, members){
@@ -82,6 +87,7 @@
                 }
               );
             }
+
             // Make the drag and drop crap
             $(".team").each(function(index){
               sortable = new Sortable(this, {
@@ -106,9 +112,9 @@
               data,
               function(key, value){
                 if(value){
-                  projectbutton = '<div class="votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Close</div>';
+                  projectbutton = '<div class="votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Open</div>';
                 } else {
-                  projectbutton = '<div class="openproject votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Open</div>';
+                  projectbutton = '<div class="openproject votebutton btn" id="' + key.replace(/\s+/g, '') + 'button">Close</div>';
                 }
                 $("#selectproject").append('<option value="' + key + '">' + key + "</option>");
                 if(startingproject == 0){
